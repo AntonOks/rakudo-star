@@ -18,7 +18,7 @@ env:
 jobs:
   build_Rakudo-Star_Windows_MSI_package:
     # Windows-latest doesn't work since it's 2022. We need to fall back to windows-2019
-    runs-on: windows-2019
+    runs-on: windows-latest
     # if: github.event.ref_type == 'tag'
     steps:
       - name: Checkout repository
@@ -92,7 +92,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         # ncipollo/release-action needs a tag! Either a usual "GIT TAG" or an dedicated TAG, see below!
-        tag: 2024.06 # set a TAG if you want a release to be build on GitHub _BUT_ do not provide a GIT TAG
+        tag: 2024.06.01 # set a TAG if you want a release to be build on GitHub _BUT_ do not provide a GIT TAG
         draft: false
         allowUpdates: true
         artifactErrorsFailBuild: true
