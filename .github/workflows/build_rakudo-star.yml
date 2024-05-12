@@ -25,15 +25,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup VS Dev Environment
         uses: compnerd/gha-setup-vsdevenv@v6
-      - name: Import gpg key
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          fingerprint: ${{ env.GPG_FINGERPRINT }}
+     # - name: Import gpg key
+     #   id: import_gpg
+     #   uses: crazy-max/ghaction-import-gpg@v6
+     #   with:
+     #     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+     #     passphrase: ${{ secrets.PASSPHRASE }}
+     #     fingerprint: ${{ env.GPG_FINGERPRINT }}
       - name: Run the build-with-choco.ps1 script
-        run: pwsh -command ".\$GITHUB_WORKSPACE\tools\build\binary-release\Windows\build-with-choco.ps1" -sign
+        run: pwsh -command ".\$GITHUB_WORKSPACE\tools\build\binary-release\Windows\build-with-choco.ps1"
+     #   run: pwsh -command ".\$GITHUB_WORKSPACE\tools\build\binary-release\Windows\build-with-choco.ps1" -sign
       - name: List my stuff
         run: Get-ChildItem -Exclude ".git" -Recurse
       - name: Upload Rakudo-Star Windows artifacts
@@ -60,13 +61,13 @@ jobs:
         run: ./bin/rstar sysinfo
       - name: Fetch RSTAR Components
         run: ./bin/rstar fetch -l
-      - name: Import gpg key
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          fingerprint: ${{ env.GPG_FINGERPRINT }}
+     # - name: Import gpg key
+     #   id: import_gpg
+     #   uses: crazy-max/ghaction-import-gpg@v6
+     #   with:
+     #     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+     #     passphrase: ${{ secrets.PASSPHRASE }}
+     #     fingerprint: ${{ env.GPG_FINGERPRINT }}
       - name: Create RSTAR Distribution
         run: ./bin/rstar dist
       - name: List my stuff
