@@ -9,7 +9,7 @@ on:
   create: #[push, create, workflow_dispatch]
     tags:
     - 2[0-9]+.[0-1][0-1]'**'
-  # workflow_dispatch: # IF you want to enable a GH dispatch (manual build) you MUST set a TAG in "ncipollo/release-action" below!!!
+  workflow_dispatch: # IF you want to enable a GH dispatch (manual build) you MUST set a TAG in "ncipollo/release-action" below!!!
 
 env:
   GPG_FINGERPRINT: 3E7E3C6EAF916676AC549285A2919382E961E2EE
@@ -91,7 +91,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         # ncipollo/release-action needs a tag! Either a usual "GIT TAG" or an dedicated TAG, see below!
-        #tag: 2021.06 # set a TAG if you want a release to be build on GitHub _BUT_ do not provide a GIT TAG
+        tag: 2024.06 # set a TAG if you want a release to be build on GitHub _BUT_ do not provide a GIT TAG
         draft: false
         allowUpdates: true
         artifactErrorsFailBuild: true
