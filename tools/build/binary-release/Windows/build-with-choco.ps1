@@ -121,7 +121,7 @@ CheckLastExitCode
 
 cd zef
 Write-Host "   INFO - Installing ZEF"
-& $PrefixPath\bin\raku.exe -I. bin\zef install . --install-to=$PrefixPath\share\perl6\site\ --debug
+& $PrefixPath\bin\raku.exe -I. bin\zef install . --debug --force-test --install-to=$PrefixPath\share\perl6\site\
 CheckLastExitCode
 
 # Add the required rakudo folders to PATH in order for some modules to test correctly (File::Which)
@@ -147,8 +147,8 @@ Select-String -Path rakudo-star-modules.txt -Pattern " http "," git " -SimpleMat
         $readLineDLL = $True
     }
     
-    IF ( [string]( & zef install $moduleName --debug --install-to=$PrefixPath\share\perl6\site\) -match 'No candidates found matching identity' ) {
-        & zef install $moduleUrl --debug --install-to=$PrefixPath\share\perl6\site\
+    IF ( [string]( & zef install $moduleName --debug --force-test --install-to=$PrefixPath\share\perl6\site\) -match 'No candidates found matching identity' ) {
+        & zef install $moduleUrl --debug --force-test --install-to=$PrefixPath\share\perl6\site\
     }
   }
 }
