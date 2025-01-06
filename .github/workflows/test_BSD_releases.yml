@@ -55,7 +55,7 @@ jobs:
           cpu_count: 2
           run: |
             sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }}
-            if [ -f /usr/local/bin/egcc ]; then ln -sf /usr/local/bin/egcc /usr/local/bin/gcc; fi # OpenBSD hack for Rakudo :|
+            if [ -f /usr/local/bin/egcc ]; then sudo ln -sf /usr/local/bin/egcc /usr/local/bin/gcc; fi # OpenBSD hack for Rakudo :|
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
