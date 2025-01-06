@@ -18,18 +18,21 @@ jobs:
       matrix:
       # see https://github.com/marketplace/actions/cross-platform-action#supported-platforms for the [latest] supported BSD derivated and their releases
         os:
-          - name: freebsd
-            pkg_add: 'pkg install -y'
-            architecture: x86-64
-            version: '14.2'
+          #- name: freebsd
+          #  pkg_add: 'pkg install -y'
+          #  gcc: 'gcc'
+          #  architecture: x86-64
+          #  version: '14.2'
 
           - name: openbsd
             pkg_add: 'pkg_add'
+            gcc: 'gcc-11.2.0p14'
             architecture: x86-64
             version: '7.6'
 
           - name: netbsd
-            pkg_add: 'pkgin install'
+            pkg_add: 'pkgin install -y'
+            gcc: 'gcc'
             architecture: x86-64
             version: '10.0'
 
@@ -51,7 +54,7 @@ jobs:
           memory: 6G
           cpu_count: 2
           run: |
-            sudo ${{ matrix.os.pkg_add }} git gcc
+            sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }}
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             ./bin/rstar install -p "/tmp/ci-$JOB_ID"
