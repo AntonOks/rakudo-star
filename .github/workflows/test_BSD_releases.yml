@@ -37,22 +37,22 @@ jobs:
 
       - name: Test on ${{ matrix.os.name }}
         uses: cross-platform-actions/action@v0.26.0
-          env:
-            RSTAR_DEBUG: 1
-          with:
-            environment_variables: RSTAR_DEBUG
-            operating_system: ${{ matrix.os.name }}
-            architecture: ${{ matrix.os.architecture }}
-            version: ${{ matrix.os.version }}
-            shell: bash
-            # To set proper machine specifications, stay under the "GitHub public runners" specs, see
-            #   https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-            memory: 6G
-            cpu_count: 2
-            run: |
-              ${{ matrix.os.pkg_add }} gcc make perl5 curl git tar
-              ./bin/rstar sysinfo
-              ./bin/rstar fetch -l
-              ./bin/rstar install -p "/tmp/ci-$JOB_ID"
-              ls -laR /tmp/ci-$JOB_ID
+        env:
+          RSTAR_DEBUG: 1
+        with:
+          environment_variables: RSTAR_DEBUG
+          operating_system: ${{ matrix.os.name }}
+          architecture: ${{ matrix.os.architecture }}
+          version: ${{ matrix.os.version }}
+          shell: bash
+          # To set proper machine specifications, stay under the "GitHub public runners" specs, see
+          #   https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+          memory: 6G
+          cpu_count: 2
+          run: |
+            ${{ matrix.os.pkg_add }} gcc make perl5 curl git tar
+            ./bin/rstar sysinfo
+            ./bin/rstar fetch -l
+            ./bin/rstar install -p "/tmp/ci-$JOB_ID"
+            ls -laR /tmp/ci-$JOB_ID
               
