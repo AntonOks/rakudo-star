@@ -51,7 +51,7 @@ jobs:
           memory: 6G
           cpu_count: 2
           run: |
-            # sudo ${{ matrix.os.pkg_add }} git
+            sudo ${{ matrix.os.pkg_add }} git
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             ./bin/rstar install -p "/tmp/ci-$JOB_ID"
