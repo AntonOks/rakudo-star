@@ -54,4 +54,5 @@ jobs:
               ./bin/rstar sysinfo
               ./bin/rstar fetch -l
               ./bin/rstar install -p "/tmp/ci-$JOB_ID"
+              ls -laR /tmp/ci-$JOB_ID
               
