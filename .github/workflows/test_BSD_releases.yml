@@ -1,0 +1,57 @@
+name: Test *BSD builds
+
+# "create" triggers the workflow on new tag's or branches
+on:
+  create: #[push, create, workflow_dispatch]
+    tags:
+    - 2[0-9]+.[0-1][0-1]'**'
+  workflow_dispatch:
+
+# env:
+#   GPG_FINGERPRINT: 3E7E3C6EAF916676AC549285A2919382E961E2EE
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+      # see https://github.com/marketplace/actions/cross-platform-action#supported-platforms for the [latest] supported BSD derivated and their releases
+        os:
+          - name: freebsd
+            pkg_add: 'pkg install -y'
+            architecture: x86-64
+            version: '14.2'
+
+          - name: openbsd
+            pkg_add: 'pkg_add'
+            architecture: x86-64
+            version: '7.6'
+
+          - name: netbsd
+            pkg_add: 'pkg_add'
+            architecture: x86-64
+            version: '10.0'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test on ${{ matrix.os.name }}
+        uses: cross-platform-actions/action@v0.26.0
+          env:
+            RSTAR_DEBUG: 1
+          with:
+            environment_variables: RSTAR_DEBUG
+            operating_system: ${{ matrix.os.name }}
+            architecture: ${{ matrix.os.architecture }}
+            version: ${{ matrix.os.version }}
+            shell: bash
+            # To set proper machine specifications, stay under the "GitHub public runners" specs, see
+            #   https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+            memory: 6G
+            cpu_count: 2
+            run: |
+              ${{ matrix.os.pkg_add }} gcc make perl5 curl git tar
+              ./bin/rstar sysinfo
+              ./bin/rstar fetch -l
+              ./bin/rstar install -p "/tmp/ci-$JOB_ID"
+              
