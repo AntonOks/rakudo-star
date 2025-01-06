@@ -31,7 +31,7 @@ jobs:
             version: '7.6'
 
           - name: netbsd
-            pkg_add: 'pkgin install -y'
+            pkg_add: 'pkgin -y install'
             gcc: 'gcc'
             architecture: x86-64
             version: '10.0'
@@ -55,6 +55,7 @@ jobs:
           cpu_count: 2
           run: |
             sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }}
+            if [ -f /usr/local/bin/egcc ]; then ln -sf /usr/local/bin/egcc /usr/local/bin/gcc; fi # OpenBSD hack for Rakudo :|
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
