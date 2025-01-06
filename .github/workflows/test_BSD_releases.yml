@@ -51,7 +51,7 @@ jobs:
           memory: 6G
           cpu_count: 2
           run: |
-            sudo ${{ matrix.os.pkg_add }} gcc make perl5 curl git tar
+            # sudo ${{ matrix.os.pkg_add }} gcc make perl5 curl git tar
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             ./bin/rstar install -p "/tmp/ci-$JOB_ID"
