@@ -57,6 +57,8 @@ jobs:
             sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }}
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
-            ./bin/rstar install -p "/tmp/ci-$JOB_ID"
-            ls -laR /tmp/ci-$JOB_ID
+            ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
+            export PATH="${{ runner.temp }}/rakudo-star/bin:${{ runner.temp }}/rakudo-star/share/perl6/site/bin:${{ runner.temp }}/rakudo-star/share/perl6/vendor/bin:${{ runner.temp }}/rakudo-star/share/perl6/core/bin:$PATH"
+            ls -laR ${{ runner.temp }}/rakudo-star/bin
+            rakudo -v
               
