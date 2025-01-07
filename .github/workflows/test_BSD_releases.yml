@@ -68,6 +68,7 @@ jobs:
             ulimit -a
             echo "*** DIAG end***"
             sudo usermod -L staff $(id -n -u)
+            ulimit -a
             #ulimit -c unlimited
             # ulimit -d unlimited
             #ulimit -f unlimited
@@ -82,7 +83,7 @@ jobs:
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             #
-            exit
+            # exit
             #
             ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
             export PATH="${{ runner.temp }}/rakudo-star/bin:${{ runner.temp }}/rakudo-star/share/perl6/site/bin:${{ runner.temp }}/rakudo-star/share/perl6/vendor/bin:${{ runner.temp }}/rakudo-star/share/perl6/core/bin:$PATH"
