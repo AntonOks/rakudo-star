@@ -62,19 +62,20 @@ jobs:
             echo "*** DIAG start***""
             dmesg|grep mem
             sysctl hw
+            id
             ulimit -a
             echo "*** DIAG end***""
-            ulimit -c unlimited
+            #ulimit -c unlimited
             # ulimit -d unlimited
-            ulimit -f unlimited
-            ulimit -l 28336888
-            ulimit -m 28336888
-            ulimit -n 28336888
-            ulimit -p unlimited
-            ulimit -s unlimited
-            ulimit -t unlimited
-            ulimit -u unlimited
-            ulimit -v unlimited
+            #ulimit -f unlimited
+            # ulimit -l 28336888
+            #ulimit -m 28336888
+            #ulimit -n 28336888
+            #ulimit -p unlimited
+            #ulimit -s unlimited
+            #ulimit -t unlimited
+            #ulimit -u unlimited
+            #ulimit -v 28336888
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
