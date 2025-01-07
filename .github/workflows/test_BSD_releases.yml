@@ -71,7 +71,7 @@ jobs:
             id
             ulimit -a
             #ulimit -c unlimited
-            # ulimit -d unlimited
+            ulimit -d 14168444
             #ulimit -f unlimited
             # ulimit -l 28336888
             #ulimit -m 28336888
@@ -81,6 +81,7 @@ jobs:
             #ulimit -t unlimited
             #ulimit -u unlimited
             #ulimit -v 28336888
+            ulimit -a
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             #
