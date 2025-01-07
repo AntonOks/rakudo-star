@@ -32,11 +32,11 @@ jobs:
             version: '7.6'
 
           # Rakudo isn't compiling. Skipping for now!
-          - name: netbsd
-            pkg_add: 'pkgin -y install'
-            gcc: 'gcc12'
-            architecture: x86-64
-            version: '10.0'
+          #- name: netbsd
+          #  pkg_add: 'pkgin -y install'
+          #  gcc: 'gcc14'
+          #  architecture: x86-64
+          #  version: '10.0'
 
     steps:
       - uses: actions/checkout@v4
@@ -60,6 +60,17 @@ jobs:
             sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }}
             if [ -f /usr/local/bin/egcc ]; then sudo ln -sf /usr/local/bin/egcc /usr/local/bin/gcc; fi # OpenBSD hack for Rakudo :|
             ulimit -a
+            ulimit -c unlimited
+            ulimit -d unlimited
+            ulimit -f unlimited
+            ulimit -l unlimited
+            ulimit -m unlimited
+            ulimit -n unlimited
+            ulimit -p unlimited
+            ulimit -s unlimited
+            ulimit -t unlimited
+            ulimit -u unlimited
+            ulimit -v unlimited
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
