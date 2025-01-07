@@ -18,6 +18,7 @@ jobs:
       matrix:
       # see https://github.com/marketplace/actions/cross-platform-action#supported-platforms for the [latest] supported BSD derivated and their releases
         os:
+          # FreeBSD works ok!!!
           #- name: freebsd
           #  pkg_add: 'pkg install -y'
           #  gcc: 'gcc'
@@ -30,9 +31,10 @@ jobs:
             architecture: x86-64
             version: '7.6'
 
+          # Rakudo isn't compiling. Skipping for now!
           - name: netbsd
             pkg_add: 'pkgin -y install'
-            gcc: 'gcc14'
+            gcc: 'gcc12'
             architecture: x86-64
             version: '10.0'
 
@@ -48,6 +50,7 @@ jobs:
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
           version: ${{ matrix.os.version }}
+          hypervisor: qemu
           shell: bash
           # To set proper machine specifications, stay under the "GitHub public runners" specs, see
           #   https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
@@ -56,6 +59,7 @@ jobs:
           run: |
             sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }}
             if [ -f /usr/local/bin/egcc ]; then sudo ln -sf /usr/local/bin/egcc /usr/local/bin/gcc; fi # OpenBSD hack for Rakudo :|
+            ulimit -a
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
