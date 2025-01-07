@@ -68,6 +68,7 @@ jobs:
             ulimit -a
             echo "*** DIAG end***"
             sudo usermod -L pbuild $(id -n -u)
+            id
             ulimit -a
             #ulimit -c unlimited
             # ulimit -d unlimited
