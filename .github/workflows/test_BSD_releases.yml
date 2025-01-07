@@ -64,17 +64,17 @@ jobs:
             sysctl hw
             ulimit -a
             echo "*** DIAG end***""
-            ulimit -c unlimited
-            ulimit -d unlimited
-            ulimit -f unlimited
-            ulimit -l unlimited
-            ulimit -m unlimited
-            ulimit -n unlimited
-            ulimit -p unlimited
-            ulimit -s unlimited
-            ulimit -t unlimited
-            ulimit -u unlimited
-            ulimit -v unlimited
+            sudo ulimit -c unlimited
+            sudo ulimit -d unlimited
+            sudo ulimit -f unlimited
+            sudo ulimit -l unlimited
+            sudo ulimit -m unlimited
+            sudo ulimit -n unlimited
+            sudo ulimit -p unlimited
+            sudo ulimit -s unlimited
+            sudo ulimit -t unlimited
+            sudo ulimit -u unlimited
+            sudo ulimit -v unlimited
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
