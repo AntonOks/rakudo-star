@@ -51,7 +51,7 @@ jobs:
           shell: bash
           # To set proper machine specifications, stay under the "GitHub public runners" specs, see
           #   https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-          memory: 12G
+          memory: 14G
           cpu_count: 2
           run: |
             sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }}
