@@ -67,7 +67,7 @@ jobs:
             ulimit -c unlimited
             # ulimit -d unlimited
             ulimit -f unlimited
-            ulimit -l unlimited
+            # ulimit -l unlimited
             ulimit -m unlimited
             ulimit -n unlimited
             ulimit -p unlimited
