@@ -59,12 +59,14 @@ jobs:
           run: |
             sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }}
             if [ -f /usr/local/bin/egcc ]; then sudo ln -sf /usr/local/bin/egcc /usr/local/bin/gcc; fi # OpenBSD hack for Rakudo :|
-            echo "*** DIAG start***""
+            echo "*** DIAG start***"
             dmesg|grep mem
             sysctl hw
             id
+            id -u -n
+            cat /etc/login.conf
             ulimit -a
-            echo "*** DIAG end***""
+            echo "*** DIAG end***"
             #ulimit -c unlimited
             # ulimit -d unlimited
             #ulimit -f unlimited
