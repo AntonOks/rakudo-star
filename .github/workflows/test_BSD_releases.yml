@@ -71,7 +71,7 @@ jobs:
             # ulimit -d unlimited
             #ulimit -f unlimited
             # ulimit -l 28336888
-            #ulimit -m 28336888
+            ulimit -m 28336888
             #ulimit -n 28336888
             #ulimit -p unlimited
             #ulimit -s unlimited
@@ -80,6 +80,9 @@ jobs:
             #ulimit -v 28336888
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
+            #
+            exit
+            #
             ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
             export PATH="${{ runner.temp }}/rakudo-star/bin:${{ runner.temp }}/rakudo-star/share/perl6/site/bin:${{ runner.temp }}/rakudo-star/share/perl6/vendor/bin:${{ runner.temp }}/rakudo-star/share/perl6/core/bin:$PATH"
             ls -laR ${{ runner.temp }}/rakudo-star/bin
