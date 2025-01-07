@@ -67,7 +67,7 @@ jobs:
             cat /etc/login.conf
             ulimit -a
             echo "*** DIAG end***"
-            sudo usermod -L staff $(id -n -u)
+            sudo usermod -L pbuild $(id -n -u)
             ulimit -a
             #ulimit -c unlimited
             # ulimit -d unlimited
