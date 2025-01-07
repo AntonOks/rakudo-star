@@ -51,7 +51,7 @@ jobs:
           architecture: ${{ matrix.os.architecture }}
           version: ${{ matrix.os.version }}
           hypervisor: qemu
-          shell: bash
+          shell: sh
           # To set proper machine specifications, stay under the "GitHub public runners" specs, see
           #   https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
           memory: 14G
