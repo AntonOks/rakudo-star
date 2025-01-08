@@ -26,6 +26,7 @@ jobs:
           #  version: '14.2'
 
           #OpenBSD works also now!
+          # See also https://blog.lambda.cx/posts/openbsd-compiling-rakudo-star/
           #- name: openbsd
           #  pkg_add: 'pkg_add'
           #  gcc: 'gcc-11.2.0p14'
@@ -68,10 +69,10 @@ jobs:
             ulimit -a
             echo "*** DIAG end***"
             # sudo usermod -L staff $(id -n -u)
-            id
-            ulimit -a
+            #id
+            #ulimit -a
             #ulimit -c unlimited
-            ulimit -d 14168444
+            #ulimit -d 14168444
             #ulimit -f unlimited
             # ulimit -l 28336888
             #ulimit -m 28336888
@@ -81,7 +82,7 @@ jobs:
             #ulimit -t unlimited
             #ulimit -u unlimited
             #ulimit -v 28336888
-            ulimit -a
+            #ulimit -a
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             #
