@@ -25,6 +25,7 @@ jobs:
           #  architecture: x86-64
           #  version: '14.2'
 
+          #OpenBSD works also now!
           - name: openbsd
             pkg_add: 'pkg_add'
             gcc: 'gcc-11.2.0p14'
@@ -32,11 +33,11 @@ jobs:
             version: '7.6'
 
           # Rakudo isn't compiling. Skipping for now!
-          #- name: netbsd
-          #  pkg_add: 'pkgin -y install'
-          #  gcc: 'gcc14'
-          #  architecture: x86-64
-          #  version: '10.0'
+          - name: netbsd
+            pkg_add: 'pkgin -y install'
+            gcc: 'gcc14'
+            architecture: x86-64
+            version: '10.0'
 
     steps:
       - uses: actions/checkout@v4
