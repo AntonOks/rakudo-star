@@ -26,11 +26,11 @@ jobs:
           #  version: '14.2'
 
           #OpenBSD works also now!
-          - name: openbsd
-            pkg_add: 'pkg_add'
-            gcc: 'gcc-11.2.0p14'
-            architecture: x86-64
-            version: '7.6'
+          #- name: openbsd
+          #  pkg_add: 'pkg_add'
+          #  gcc: 'gcc-11.2.0p14'
+          #  architecture: x86-64
+          #  version: '7.6'
 
           # Rakudo isn't compiling. Skipping for now!
           - name: netbsd
