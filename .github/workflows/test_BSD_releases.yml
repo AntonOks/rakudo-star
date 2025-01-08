@@ -88,7 +88,7 @@ jobs:
             #
             # exit
             #
-            sudo -E -g daemon ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
+            sudo -E ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
             export PATH="${{ runner.temp }}/rakudo-star/bin:${{ runner.temp }}/rakudo-star/share/perl6/site/bin:${{ runner.temp }}/rakudo-star/share/perl6/vendor/bin:${{ runner.temp }}/rakudo-star/share/perl6/core/bin:$PATH"
             ls -laR ${{ runner.temp }}/rakudo-star/bin
             rakudo -v
