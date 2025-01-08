@@ -58,7 +58,7 @@ jobs:
           memory: 14G
           cpu_count: 2
           run: |
-            sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }}
+            sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }} sudo
             if [ -f /usr/local/bin/egcc ]; then sudo ln -sf /usr/local/bin/egcc /usr/local/bin/gcc; fi # OpenBSD hack for Rakudo :|
             echo "*** DIAG start***"
             # sysctl -ea
