@@ -4,7 +4,7 @@
 #   here __AND__ all of them do require a "git tag"!
 
 # Zef, the package manager
-zef                      git  https://github.com/ugexe/zef.git                                       v0.22.6   
+zef                      git  https://github.com/ugexe/zef.git                                       v0.22.7   
 App::Zef-Deps            git  https://github.com/coke/raku-zef-deps.git                              0.9.8     
 
 # Internationalization
@@ -17,7 +17,7 @@ File-Find                git  https://github.com/raku-community-modules/File-Fin
 Terminal-ANSIColor       git  https://github.com/tadzik/Terminal-ANSIColor.git                       0.12      
 Term-termios             git  https://github.com/krunen/term-termios.git                             0.2.8     
 Terminal-ANSIParser      git  https://github.com/japhb/Terminal-ANSIParser.git                       0.0.4     
-Terminal-LineEditor      git  https://github.com/japhb/Terminal-LineEditor.git                       0.0.17    
+Terminal-LineEditor      git  https://github.com/japhb/Terminal-LineEditor.git                       0.0.18    
 
 # Configuration management
 Hash-Merge               git  https://github.com/scriptkitties/p6-Hash-Merge.git                     v2.0.0    
@@ -59,7 +59,7 @@ JSON-Unmarshal           git  https://github.com/raku-community-modules/JSON-Unm
 JSON-Marshal             git  https://github.com/jonathanstowe/JSON-Marshal.git                      v0.0.25   
 JSON-Class               git  https://github.com/jonathanstowe/JSON-Class.git                        v0.0.21   
 META6                    git  https://github.com/jonathanstowe/META6.git                             v0.0.30   
-License-SPDX             git  https://github.com/jonathanstowe/License-SPDX.git                      v3.25.0   
+License-SPDX             git  https://github.com/jonathanstowe/License-SPDX.git                      v3.26.0   
 Test-META                git  https://github.com/jonathanstowe/Test-META.git                         v0.0.20   
 SVG                      git  https://github.com/moritz/svg.git                                      v1.0      
 SVG-Plot                 git  https://github.com/moritz/svg-plot.git                                 master    
@@ -73,10 +73,10 @@ OpenSSL                  git  https://github.com/sergot/openssl.git             
 IO-Socket-SSL            git  https://github.com/sergot/io-socket-ssl.git                            0.0.3     
 LWP-Simple               git  https://github.com/raku-community-modules/raku-lwp-simple.git          0.109     
 Digest-MD5               git  https://github.com/cosimo/perl6-digest-md5.git                         0.05      
-HTTP-Status              git  https://github.com/lizmat/HTTP-Status.git                              0.0.4     
+HTTP-Status              git  https://github.com/lizmat/HTTP-Status.git                              0.0.5     
 PSGI                     git  https://github.com/raku-community-modules/PSGI.git                     1.2.1     
 HTTP-Easy                git  https://github.com/raku-community-modules/HTTP-Easy.git                1.2       
-Test-When                git  https://github.com/raku-community-modules/perl6-Test-When.git          1.1       
+Test-When                git  https://github.com/raku-community-modules/perl6-Test-When.git          2.0       
 Digest                   git  https://github.com/grondilu/libdigest-raku.git                         1.1.0     
 Testo                    git  https://github.com/raku-community-modules/Testo.git                    1.003009  
 
