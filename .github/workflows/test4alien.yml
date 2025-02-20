@@ -13,4 +13,4 @@ jobs:
     steps:
     - name: Run alien
       run: |
-        alien --help
+        sudo apt-get install alien && alien --help
