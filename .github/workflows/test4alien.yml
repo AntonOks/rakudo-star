@@ -14,10 +14,16 @@ jobs:
     - name: Run alien
       run: |
         sudo apt update -qq && sudo apt upgrade -qq && sudo apt install -y -qq alien
-        curl -s -O https://github.com/rakudo/star/releases/download/2025.01/rakudo-star-2025.01.tar.gz
+        mkdir temp && cd temp
+        curl -s -O https://rakudo.org/dl/star/rakudo-star-2025.01-01.tar.gz
         echo "running 1st ls" && ls -l
-        echo "running gunzip..." && gunzip rakudo-star-2025.01.tar.gz
+        echo "running unzip and tar..." && tar -xzf rakudo-star-2025.01-01.tar.gz
+        cd rakudo-star-2025.01
+        bin/rstar fetch -l
+        bin/rstar install
+        bin/rstar clean -s
+        tar -cf rakudo-star.tar
         for PKG in deb rpm; do
-          sudo alien --to-${PKG} --description="Rakudo Star 2025.01" --version="2025.01" --target="x86_64" --veryverbose rakudo-star-2025.01.tar
+          sudo alien --to-${PKG} --description="Rakudo Star 2025.01" --version="01" --target="amd64" --verbose rakudo-star.tar
         done
         echo "running 2nd ls" && ls -la
