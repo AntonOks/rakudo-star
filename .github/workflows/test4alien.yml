@@ -13,4 +13,4 @@ jobs:
     steps:
     - name: Run alien
       run: |
-        sudo apt-get install alien && alien --help
+        sudo apt update && sudo apt upgrade && sudo apt install -y -qq alien && alien --help
