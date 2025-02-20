@@ -1,0 +1,16 @@
+name: Test for alien 
+
+on:
+  workflow_dispatch:
+
+env:
+  RKD_REVISION: "01" # Change this if a build revision ever changes. 
+
+jobs:
+  run_alien:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run alien
+      run: |
+        alien --help
