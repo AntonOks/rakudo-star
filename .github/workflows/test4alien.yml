@@ -13,4 +13,9 @@ jobs:
     steps:
     - name: Run alien
       run: |
-        sudo apt update && sudo apt upgrade && sudo apt install -y -qq alien && alien --help
+        sudo apt update -qq && sudo apt upgrade -qq && sudo apt install -y -qq alien
+        curl -s -O https://github.com/rakudo/star/releases/download/2025.01/rakudo-star-2025.01.tar.gz 
+        for PKG in deb rpm; do
+          alien --to-${PKG} --description="Rakudo Star 2025.01" --version="2025.01" --target="x86_64" --veryverbose rakudo-star-2025.01.tar.gz
+        done
+        ls -la
