@@ -22,7 +22,8 @@ jobs:
         bin/rstar fetch -l
         bin/rstar install
         bin/rstar clean -s
-        tar -cf rakudo-star.tar
+        cd ..
+        tar -cf rakudo-star.tar rakudo-star-2025.01
         for PKG in deb rpm; do
           sudo alien --to-${PKG} --description="Rakudo Star 2025.01" --version="01" --target="amd64" --verbose rakudo-star.tar
         done
