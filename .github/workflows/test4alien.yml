@@ -4,7 +4,10 @@ on:
   workflow_dispatch:
 
 env:
-  RKD_REVISION: "01" # Change this if a build revision ever changes. 
+  RKD_VERSION: "2025.01"
+  RKD_REVISION: "01" # Change this if a build revision ever changes.
+  RKD_RELEASE: "rakudo-star-${RKD_VERSION}-${RKD_REVISION}"
+  RKD_RELEASE_SHORT: "rakudo-star-${RKD_VERSION}"
 
 jobs:
   run_alien:
@@ -15,17 +18,17 @@ jobs:
       run: |
         sudo apt update -qq && sudo apt upgrade -qq && sudo apt install -y -qq alien
         mkdir temp && cd temp
-        curl -s -O https://rakudo.org/dl/star/rakudo-star-2025.01-01.tar.gz
+        curl -s -O https://rakudo.org/dl/star/${RKD_RELEASE}.tar.gz
         echo "running 1st ls" && ls -la
-        echo "running unzip and tar..." && tar -xzf rakudo-star-2025.01-01.tar.gz
-        cd rakudo-star-2025.01
+        echo "running unzip and tar..." && tar -xzf ${RKD_RELEASE}.tar.gz
+        cd ${RKD_RELEASE_SHORT}
         bin/rstar fetch -l
         bin/rstar install
         bin/rstar clean -s
         cd ..
-        mv rakudo-star-2025.01 rakudo-star-2025.01_ORG
-        tar -cf rakudo-star-2025.01.tar rakudo-star-2025.01_ORG
+        mv ${RKD_RELEASE_SHORT} ${RKD_RELEASE_SHORT}_ORG
+        tar -cf ${RKD_RELEASE_SHORT}.tar ${RKD_RELEASE_SHORT}_ORG
         for PKG in deb rpm; do
-          sudo alien --to-${PKG} --description="Rakudo Star 2025.01" --version="01" --target="amd64" --verbose rakudo-star-2025.01.tar
+          sudo alien --to-${PKG} --description="Rakudo Star ${"RKD_VERSION"} --target="amd64" --verbose ${RKD_RELEASE_SHORT}.tar
         done
         echo "running 2nd ls" && ls -la
