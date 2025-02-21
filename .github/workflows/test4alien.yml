@@ -16,15 +16,16 @@ jobs:
         sudo apt update -qq && sudo apt upgrade -qq && sudo apt install -y -qq alien
         mkdir temp && cd temp
         curl -s -O https://rakudo.org/dl/star/rakudo-star-2025.01-01.tar.gz
-        echo "running 1st ls" && ls -l
+        echo "running 1st ls" && ls -la
         echo "running unzip and tar..." && tar -xzf rakudo-star-2025.01-01.tar.gz
         cd rakudo-star-2025.01
         bin/rstar fetch -l
         bin/rstar install
         bin/rstar clean -s
         cd ..
-        tar -cf rakudo-star.tar rakudo-star-2025.01
+        mv rakudo-star-2025.01 rakudo-star-2025.01_ORG
+        tar -cf rakudo-star-2025.01.tar rakudo-star-2025.01_ORG
         for PKG in deb rpm; do
-          sudo alien --to-${PKG} --description="Rakudo Star 2025.01" --version="01" --target="amd64" --verbose rakudo-star.tar
+          sudo alien --to-${PKG} --description="Rakudo Star 2025.01" --version="01" --target="amd64" --verbose rakudo-star-2025.01.tar
         done
         echo "running 2nd ls" && ls -la
