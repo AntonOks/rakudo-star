@@ -33,3 +33,12 @@ jobs:
         done
         echo "*** running 2nd ls ***" && ls -la
       shell: bash
+      
+    - name: Upload DEB and RPM artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: output
+        path: |
+          *.rpm
+          *.deb
+        if-no-files-found: error
