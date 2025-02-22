@@ -39,6 +39,6 @@ jobs:
       with:
         name: output
         path: |
-          *.rpm
-          *.deb
+          rakudo-star*.deb
+          rakudo-star*.rpm
         if-no-files-found: error
