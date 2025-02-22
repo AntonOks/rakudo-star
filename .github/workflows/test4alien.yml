@@ -18,18 +18,18 @@ jobs:
       run: |
         sudo apt update -qq && sudo apt upgrade -qq && sudo apt install -y -qq alien
         mkdir temp && cd temp
-        curl -s -O "https://rakudo.org/dl/star/${RKD_RELEASE}.tar.gz"
+        curl -s -O "https://rakudo.org/dl/star/${{ env.RKD_RELEASE }}.tar.gz"
         echo "*** running 1st ls ***" && ls -la
-        echo "*** running unzip and tar... ***" && tar -xzf "${RKD_RELEASE}.tar.gz"
-        cd "${RKD_RELEASE_SHORT}"
+        echo "*** running unzip and tar... ***" && tar -xzf "${{ env.RKD_RELEASE }}.tar.gz"
+        cd "${{ env.RKD_RELEASE_SHORT }}"
         bin/rstar fetch -l
         bin/rstar install
         bin/rstar clean -s
         cd ..
-        mv "${RKD_RELEASE_SHORT}" "${RKD_RELEASE_SHORT}_ORG"
-        tar -cf "${RKD_RELEASE_SHORT}.tar" "${RKD_RELEASE_SHORT}_ORG"
+        mv "${{ env.RKD_RELEASE_SHORT }}" "${{ env.RKD_RELEASE_SHORT }}_ORG"
+        tar -cf "${{ env.RKD_RELEASE_SHORT }}.tar" "${{ env.RKD_RELEASE_SHORT }}_ORG"
         for PKG in deb rpm; do
-          sudo alien --to-${PKG} --description="Rakudo Star ${RKD_VERSION}" --target="amd64" --verbose "${RKD_RELEASE_SHORT}.tar"
+          sudo alien --to-${PKG} --description="Rakudo Star ${{ env.RKD_VERSION }}" --target="amd64" --verbose "${{ env.RKD_RELEASE_SHORT }}.tar"
         done
         echo "*** running 2nd ls ***" && ls -la
       shell: bash
