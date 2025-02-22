@@ -32,3 +32,4 @@ jobs:
           sudo alien --to-${PKG} --description="Rakudo Star ${RKD_VERSION}" --target="amd64" --verbose "${RKD_RELEASE_SHORT}.tar"
         done
         echo "*** running 2nd ls ***" && ls -la
+      shell: bash
