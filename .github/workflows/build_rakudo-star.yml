@@ -78,12 +78,52 @@ jobs:
           name: output
           path: dist/*
           if-no-files-found: error
-      
+
+  build_Rakudo-Star_DEB_and_RPM_packages:
+    needs: [build_Rakudo-Star_Linux_source]
+    runs-on: ubuntu-latest
+    if: github.event.ref_type == 'tag'
+    steps:
+      - name: Install alien
+        run: |
+          sudo apt update && sudo apt upgrade
+          sudo apt install -y alien rpm
+      - name: Download Rakudo Star artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: Rakudo-Star_artifacts
+      - name: Prepare RSTAR sources
+        run: |
+          mkdir -m 755 RSTAR_tmp
+          tar -xzf Rakudo-Star_artifacts/output/rakudo-star-*.tar.gz --strip-components=1 -C RSTAR_tmp
+      - name: Create DEB and RPM packages
+        env:
+          RSTAR_DEBUG: "1"
+        run: |
+          cd RSTAR_tmp
+          RKD_RELEASE=$(awk '{print $1}' RELEASE)
+          bin/rstar install
+          tar -czf ../Rakudo-Star-${RKD_RELEASE}.tgz ./bin ./include ./share
+          cd ..
+          for PKG in deb rpm; do
+            sudo alien --to-${PKG} --description="Rakudo Star ${RKD_RELEASE}" --target="amd64" --verbose --keep-version --version="${RKD_RELEASE}" Rakudo-Star-${RKD_RELEASE}.tgz
+          done
+          echo "*** running ls ***" && ls -la
+      - name: Upload Rakudo-Star DEB and RPM artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: output
+          path: |
+            Rakudo-Star-*.rpm
+            Rakudo-Star-*.deb
+          if-no-files-found: error
+
   release_Rakudo-Star_artifacts:
     needs: [build_Rakudo-Star_Windows_MSI_package, build_Rakudo-Star_Linux_source]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifact@v3
+    - name: Download Rakudo Star artifacts
+      uses: actions/download-artifact@v3
       with:
         path: Rakudo-Star_artifacts
     - name: List my stuff
