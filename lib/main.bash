@@ -9,7 +9,6 @@ source "$(dirname "${BASH_SOURCE[0]}")/logging.bash"
 RSTAR_DEPS_BIN+=(
 	git
 )
-depcheck_bin # check my own tool dependencies
 
 main() {
 	[[ -z $1 ]] && usage && exit 2
@@ -302,4 +301,5 @@ discover_system_os() {
 	fi
 }
 
+depcheck_bin || exit 5 # check my own tool dependencies first
 main "$@"
