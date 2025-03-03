@@ -26,21 +26,22 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup VS Dev Environment
         uses: compnerd/gha-setup-vsdevenv@v6
-      - name: Import gpg key
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          fingerprint: ${{ env.GPG_FINGERPRINT }}
+      # - name: Import gpg key
+      #   id: import_gpg
+      #   uses: crazy-max/ghaction-import-gpg@v6
+      #   with:
+      #     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+      #     passphrase: ${{ secrets.PASSPHRASE }}
+      #     fingerprint: ${{ env.GPG_FINGERPRINT }}
       - name: Run the build-with-choco.ps1 script
+      #   run: pwsh -command ".\$GITHUB_WORKSPACE\tools\build\binary-release\Windows\build-with-choco.ps1" -sign
         run: pwsh -command ".\$GITHUB_WORKSPACE\tools\build\binary-release\Windows\build-with-choco.ps1" -sign
       - name: List my stuff
         run: Get-ChildItem -Exclude ".git" -Recurse
       - name: Upload Rakudo-Star Windows artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: output
+          name: output-windows
           path: tools/build/binary-release/Windows/*
           if-no-files-found: error
           
@@ -61,21 +62,21 @@ jobs:
         run: ./bin/rstar sysinfo
       - name: Fetch RSTAR Components
         run: ./bin/rstar fetch -l
-      - name: Import gpg key
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          fingerprint: ${{ env.GPG_FINGERPRINT }}
+      # - name: Import gpg key
+      #   id: import_gpg
+      #   uses: crazy-max/ghaction-import-gpg@v6
+      #   with:
+      #     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+      #     passphrase: ${{ secrets.PASSPHRASE }}
+      #     fingerprint: ${{ env.GPG_FINGERPRINT }}
       - name: Create RSTAR Distribution
         run: ./bin/rstar dist
       - name: List my stuff
         run: ls -lAR -I ".git" -I "src"
       - name: Upload Rakudo-Star Linux artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: output
+          name: output-linux
           path: dist/*
           if-no-files-found: error
 
@@ -89,9 +90,11 @@ jobs:
           sudo apt update && sudo apt upgrade
           sudo apt install -y alien rpm
       - name: Download Rakudo Star artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: Rakudo-Star_artifacts
+          pattern: output-*
+          merge-multiple: true
       - name: Prepare RSTAR sources
         run: |
           mkdir -m 755 RSTAR_tmp
@@ -110,9 +113,9 @@ jobs:
           done
           echo "*** running ls ***" && ls -la
       - name: Upload Rakudo-Star DEB and RPM artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: output
+          name: output-alien
           path: |
             Rakudo-Star-*.rpm
             Rakudo-Star-*.deb
@@ -123,9 +126,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Download Rakudo Star artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         path: Rakudo-Star_artifacts
+        pattern: output-*
+        merge-multiple: true
     - name: List my stuff
       run: ls -lAR
     - name: Release Rakudo-Star Windows MSI and Linux RSTAR releases
