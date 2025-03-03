@@ -6,6 +6,11 @@ source "$(dirname "${BASH_SOURCE[0]}")/util.bash"
 # shellcheck source=lib/logging.bash
 source "$(dirname "${BASH_SOURCE[0]}")/logging.bash"
 
+RSTAR_DEPS_BIN+=(
+	git
+)
+depcheck_bin # check my own tool dependencies
+
 main() {
 	[[ -z $1 ]] && usage && exit 2
 
