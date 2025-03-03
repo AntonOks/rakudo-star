@@ -93,12 +93,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: Rakudo-Star_artifacts
-          pattern: output-*
+          pattern: output-linux
           merge-multiple: true
       - name: Prepare RSTAR sources
         run: |
           mkdir -m 755 RSTAR_tmp
-          tar -xzf Rakudo-Star_artifacts/output/rakudo-star-*.tar.gz --strip-components=1 -C RSTAR_tmp
+          tar -xzf Rakudo-Star_artifacts/rakudo-star-*.tar.gz --strip-components=1 -C RSTAR_tmp
       - name: Create DEB and RPM packages
         env:
           RSTAR_DEBUG: "1"
