@@ -59,8 +59,11 @@ jobs:
           memory: 14G
           cpu_count: 2
           run: |
-            sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }} sudo
-            if [ -f /usr/local/bin/egcc ]; then sudo ln -sf /usr/local/bin/egcc /usr/local/bin/gcc; fi # OpenBSD hack for Rakudo :|
+            sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }} # add GIT and the SD specific GCC 
+            if [ -f /usr/local/bin/egcc ]; then                    # OpenBSD hack for Rakudo :|
+              sudo ln -sf /usr/local/bin/egcc /usr/local/bin/gcc;
+              sudo usermod -L pbuild $(id -n -u)
+            fi 
             echo "*** DIAG start***"
             # sysctl -ea
             id
@@ -69,12 +72,9 @@ jobs:
             ulimit -a
             echo "*** DIAG end***"
             # sudo usermod -L staff $(id -n -u)
-            #id
-            #ulimit -a
-            #ulimit -c unlimited
-            #ulimit -d 14168444
+            ulimit -d 14168444
             #ulimit -f unlimited
-            # ulimit -l 28336888
+            #ulimit -l 28336888
             #ulimit -m 28336888
             #ulimit -n 28336888
             #ulimit -p unlimited
@@ -82,7 +82,7 @@ jobs:
             #ulimit -t unlimited
             #ulimit -u unlimited
             #ulimit -v 28336888
-            #ulimit -a
+            ulimit -a
             ./bin/rstar sysinfo
             ./bin/rstar fetch -l
             #
