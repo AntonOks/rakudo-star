@@ -1,0 +1,44 @@
+name: Test for alien 
+
+on:
+  workflow_dispatch:
+
+env:
+  RKD_VERSION: "2025.01"
+  RKD_REVISION: "01" # Change this if a build revision ever changes.
+  RKD_RELEASE: "rakudo-star-${RKD_VERSION}-${RKD_REVISION}"
+  RKD_RELEASE_SHORT: "rakudo-star-${RKD_VERSION}"
+
+jobs:
+  run_alien:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run alien
+      run: |
+        sudo apt update -qq && sudo apt upgrade -qq && sudo apt install -y -qq alien
+        mkdir temp && cd temp
+        curl -s -O "https://rakudo.org/dl/star/${{ env.RKD_RELEASE }}.tar.gz"
+        echo "*** running 1st ls ***" && ls -la
+        echo "*** running unzip and tar... ***" && tar -xzf "${{ env.RKD_RELEASE }}.tar.gz"
+        cd "${{ env.RKD_RELEASE_SHORT }}"
+        bin/rstar fetch -l
+        bin/rstar install
+        bin/rstar clean -s
+        cd ..
+        mv "${{ env.RKD_RELEASE_SHORT }}" "${{ env.RKD_RELEASE_SHORT }}_ORG"
+        tar -cf "${{ env.RKD_RELEASE_SHORT }}.tar" "${{ env.RKD_RELEASE_SHORT }}_ORG"
+        for PKG in deb rpm; do
+          sudo alien --to-${PKG} --description="Rakudo Star ${{ env.RKD_VERSION }}" --target="amd64" --verbose "${{ env.RKD_RELEASE_SHORT }}.tar"
+        done
+        echo "*** running 2nd ls ***" && ls -la
+      shell: bash
+      
+    - name: Upload DEB and RPM artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: output
+        path: |
+          rakudo-star*.deb
+          rakudo-star*.rpm
+        if-no-files-found: error

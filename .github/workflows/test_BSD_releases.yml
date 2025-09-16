@@ -1,0 +1,95 @@
+name: Test *BSD builds
+
+# "create" triggers the workflow on new tag's or branches
+on:
+  create: #[push, create, workflow_dispatch]
+    tags:
+    - 2[0-9]+.[0-1][0-1]'**'
+  workflow_dispatch:
+
+# env:
+#   GPG_FINGERPRINT: 3E7E3C6EAF916676AC549285A2919382E961E2EE
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+      # see https://github.com/marketplace/actions/cross-platform-action#supported-platforms for the [latest] supported BSD derivates and their releases
+        os:
+          # FreeBSD works ok!!!
+          - name: freebsd
+            pkg_add: 'pkg install -y'
+            gcc: 'gcc'
+            architecture: x86-64
+            version: '14.2'
+
+          #OpenBSD works also now!
+          # See also https://blog.lambda.cx/posts/openbsd-compiling-rakudo-star/
+          - name: openbsd
+            pkg_add: 'pkg_add'
+            gcc: 'gcc-11.2.0p14'
+            architecture: x86-64
+            version: '7.6'
+
+          # Rakudo isn't compiling. Skipping for now!
+          #- name: netbsd
+          #  pkg_add: 'pkgin -y install'
+          #  gcc: 'gcc14'
+          #  architecture: x86-64
+          #  version: '10.0'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test on ${{ matrix.os.name }}
+        uses: cross-platform-actions/action@v0.26.0
+        env:
+          RSTAR_DEBUG: 1
+        with:
+          environment_variables: RSTAR_DEBUG
+          operating_system: ${{ matrix.os.name }}
+          architecture: ${{ matrix.os.architecture }}
+          version: ${{ matrix.os.version }}
+          hypervisor: qemu
+          shell: bash
+          # To set proper machine specifications, stay under the "GitHub public runners" specs, see
+          #   https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+          memory: 14G
+          cpu_count: 2
+          run: |
+            sudo ${{ matrix.os.pkg_add }} git ${{ matrix.os.gcc }} # add GIT and the SD specific GCC 
+            if [ -f /usr/local/bin/egcc ]; then                    # OpenBSD hack for Rakudo :|
+              sudo ln -sf /usr/local/bin/egcc /usr/local/bin/gcc;
+              sudo usermod -L pbuild $(id -n -u)
+            fi 
+            echo "*** DIAG start***"
+            # sysctl -ea
+            id
+            id -u -n
+            cat /etc/login.conf
+            ulimit -a
+            echo "*** DIAG end***"
+            # sudo usermod -L staff $(id -n -u)
+            ulimit -d 14168444
+            #ulimit -f unlimited
+            #ulimit -l 28336888
+            #ulimit -m 28336888
+            #ulimit -n 28336888
+            #ulimit -p unlimited
+            #ulimit -s unlimited
+            #ulimit -t unlimited
+            #ulimit -u unlimited
+            #ulimit -v 28336888
+            ulimit -a
+            ./bin/rstar sysinfo
+            ./bin/rstar fetch -l
+            #
+            # exit
+            #
+            sudo -E ./bin/rstar install -p "${{ runner.temp }}/rakudo-star"
+            export PATH="${{ runner.temp }}/rakudo-star/bin:${{ runner.temp }}/rakudo-star/share/perl6/site/bin:${{ runner.temp }}/rakudo-star/share/perl6/vendor/bin:${{ runner.temp }}/rakudo-star/share/perl6/core/bin:$PATH"
+            ls -laR ${{ runner.temp }}/rakudo-star/bin
+            rakudo -v
+              
