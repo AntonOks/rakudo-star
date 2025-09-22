@@ -33,7 +33,7 @@ YAMLish                  git  https://github.com/Leont/yamlish.git              
 JSON-Fast                git  https://github.com/timo/json_fast.git                                  0.19      
 
 # Database interaction
-File-Directory-Tree      git  https://github.com/raku-community-modules/File-Directory-Tree          0.2    
+File-Directory-Tree      git  https://github.com/raku-community-modules/File-Directory-Tree          0.2       
 File-Temp                git  https://github.com/2colours/raku-File-Temp.git                         0.0.12    
 NativeHelpers-Blob       git  https://github.com/salortiz/NativeHelpers-Blob.git                     v0.1.12   
 NativeLibs               git  https://github.com/salortiz/NativeLibs.git                             v0.0.9    
@@ -101,6 +101,6 @@ App-Prove6               git  https://github.com/Leont/app-prove6.git           
 LibraryCheck             git  https://github.com/jonathanstowe/LibraryCheck.git                      v0.0.12   
 Readline                 git  https://github.com/clarkema/raku-readline.git                          0.1.8     
 
-Sparrow6                 git  https://github.com/melezhik/Sparrow6.git                               0.0.78    
+Sparrow6                 git  https://github.com/melezhik/Sparrow6.git                               0.0.79    
 
 # vim: textwidth=0
