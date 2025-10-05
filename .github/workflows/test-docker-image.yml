@@ -30,7 +30,7 @@ jobs:
       with:
         path: 'star'
         files: |
-          **.Dockerfile       # Avoid using single or double quotes
+          **.Dockerfile
 
     - name: List all changed files
       env:
