@@ -47,7 +47,7 @@ jobs:
       run: |
         for FILE in ${ALL_CHANGED_DOCKERFILES}; do
           echo "Will work on file \"$FILE\" now..."
-          if [[ "$FILE" !~ "Dockerfile" ]]; then continue; fi
+          if ! [[ "$FILE" !~ "Dockerfile" ]]; then continue; fi
           IMAGE=$(basename -s ".Dockerfile" $FILE)
           echo "IMAGE is \"$IMAGE\""
           ls -l ./star/bin/rstar
