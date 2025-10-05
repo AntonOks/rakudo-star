@@ -44,5 +44,8 @@ jobs:
         RSTAR_DEBUG: 1
       run: |
         for FILE in ${ALL_DOCKERCHANGED_FILES}; do
-          ./star/bin/rstar build-docker $(basename -s ".Dockerfile" $FILE)
+          IMAGE=$(basename -s ".Dockerfile" $FILE)
+          echo "IMAGE is \"$IMAGE\""
+          ls -l ./star/bin/rstar
+          bash ./star/bin/rstar build-docker $IMAGE
         done
