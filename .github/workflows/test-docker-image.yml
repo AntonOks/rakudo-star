@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       
-    - name: Update Tools And Software
-      run: sudo apt update && sudo apt upgrade && sudo apt install jq -y -qq
+    # - name: Update Tools And Software
+    #   run: sudo apt update && sudo apt upgrade && sudo apt install jq -y -qq
 
     - name: Check out code
       uses: actions/checkout@v4
@@ -30,7 +30,7 @@ jobs:
       with:
         path: 'star'
         files: |
-          **.Dockerfile
+          **.Dockerfile       # Avoid using single or double quotes
 
     - name: List all changed files
       env:
@@ -47,7 +47,7 @@ jobs:
       run: |
         for FILE in ${ALL_CHANGED_DOCKERFILES}; do
           echo "Will work on file \"$FILE\" now..."
-          if [[ "$FILE" =~ "Dockerfile" ]]; then continue; fi
+          if [[ "$FILE" !~ "Dockerfile" ]]; then continue; fi
           IMAGE=$(basename -s ".Dockerfile" $FILE)
           echo "IMAGE is \"$IMAGE\""
           ls -l ./star/bin/rstar
