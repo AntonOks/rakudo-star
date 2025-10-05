@@ -1,0 +1,41 @@
+name: Docker Image CI
+
+on: [push, pull_request]
+  paths:
+  - 'lib/docker/**.Dockerfile'
+  workflow_dispatch:
+
+jobs:
+  verify_raku_modules:
+    runs-on: ubuntu-latest
+    steps:
+      
+    - name: Update Tools And Software
+      run: sudo apt update && sudo apt upgrade && sudo apt install jq -y -qq
+
+    - name: Check out code
+      uses: actions/checkout@v4
+      with:
+        path: 'star'
+        fetch-depth: 0
+        ref: ${{ github.head_ref }}
+
+    - name: Get Changed Dockerfiles
+      id: changed-dockerfiles
+      uses: tj-actions/changed-files@v47
+
+    - name: List all changed files
+      env:
+        ALL_CHANGED_FILES: ${{ steps.changed-dockerfiles.outputs.all_changed_files }}
+      run: |
+        for file in ${ALL_CHANGED_FILES}; do
+          echo "$file was changed"
+        done
+
+    - name: Build Docker Image(s)
+      env:
+        ALL_CHANGED_DOCKERFILES: ${{ steps.changed-dockerfiles.outputs.all_changed_files }}
+      run: |
+        for FILE in ${ALL_DOCKERCHANGED_FILES}; do
+          ./star/bin/rstar build-docker $(basename -s ".Dockerfile" $FILE)
+        done
