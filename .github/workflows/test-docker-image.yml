@@ -29,6 +29,7 @@ jobs:
       uses: tj-actions/changed-files@v47
       with:
         path: 'star'
+        files: 'Dockerfile'
 
     - name: List all changed files
       env:
@@ -45,8 +46,10 @@ jobs:
       run: |
         for FILE in ${ALL_CHANGED_DOCKERFILES}; do
           echo "Will work on file \"$FILE\" now..."
+          if [[ "$FILE" =~ "Dockerfile" ]]; then continue; fi
           IMAGE=$(basename -s ".Dockerfile" $FILE)
           echo "IMAGE is \"$IMAGE\""
           ls -l ./star/bin/rstar
-          bash ./star/bin/rstar build-docker $IMAGE
+          cd ./star
+          bash ./bin/rstar build-docker $IMAGE
         done
