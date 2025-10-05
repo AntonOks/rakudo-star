@@ -52,5 +52,5 @@ jobs:
           echo "IMAGE is \"$IMAGE\""
           ls -l ./star/bin/rstar
           cd ./star
-          bash ./bin/rstar build-docker $IMAGE
+          ./bin/rstar fetch && ./bin/rstar install && ./bin/rstar build-docker $IMAGE
         done
