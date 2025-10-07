@@ -46,7 +46,8 @@ jobs:
         RSTAR_DEBUG: 1
       run: |
         curl -LsS https://rakudo.org/latest/star/src -o rakudo-star.tar.gz
-        tar -xzf rakudo-star-*.tar.gz --directory star_src && rm -f rakudo-star-*.tar.gz
+        mkdir star_src && tar -xzf rakudo-star.tar.gz --directory star_src && rm -f rakudo-star.tar.gz
+        cd star_src && mv rakudo-star-*/* . && rm -fr rakudo-star-* && cd ..
         ./star_src/bin/rstar install -p /tmp/rstar
 
     - name: Build Docker Image(s)
