@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  varify_dockerfiles:
+  verify_changed_dockerfiles:
     runs-on: ubuntu-latest
     steps:
       
@@ -57,7 +57,7 @@ jobs:
       run: |
         for FILE in ${ALL_CHANGED_DOCKERFILES}; do
           echo "[INFO] Will copy changed Dockerfile \"$FILE\" now..."
-          if ! [[ "$FILE" =~ "Dockerfile" ]]; then echo "[WARN] Nor a Dockerfile, skipping file \"$FILE\"... && continue; fi       ### !!! should never happen !!!
+          if ! [[ "$FILE" =~ "Dockerfile" ]]; then echo "[WARN] Not a Dockerfile, skipping file \"$FILE\"..." && continue; fi       ### !!! should never happen !!!
             cp -p $FILE star_src/$FILE
             IMAGE=$(basename -s ".Dockerfile" $FILE)
             echo "[INFO] Will build Dockerimage \"$IMAGE\" with Dockerfile \"$FILE\" now..."
