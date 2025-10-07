@@ -38,7 +38,7 @@ jobs:
         ALL_CHANGED_FILES: ${{ steps.changed-dockerfiles.outputs.all_changed_files }}
       run: |
         for FILE in ${ALL_CHANGED_FILES}; do
-          echo "[INFO] \"$FILE\"" was changed"
+          echo "[INFO] \"$FILE\" was changed"
         done
 
     - name: Download And Install Rakudo-Star
