@@ -29,6 +29,7 @@ jobs:
       uses: tj-actions/changed-files@v47
       with:
         path: 'star'
+        # output_dir: ''
         files: |
           **.Dockerfile
 
@@ -36,9 +37,17 @@ jobs:
       env:
         ALL_CHANGED_FILES: ${{ steps.changed-dockerfiles.outputs.all_changed_files }}
       run: |
-        for file in ${ALL_CHANGED_FILES}; do
-          echo "$file was changed"
+        for FILE in ${ALL_CHANGED_FILES}; do
+          echo "[INFO] \"$FILE\"" was changed"
         done
+
+    - name: Download And Install Rakudo-Star
+      env:
+        RSTAR_DEBUG: 1
+      run: |
+        curl -LsS https://rakudo.org/latest/star/src -o rakudo-star.tar.gz
+        tar -xzf rakudo-star-*.tar.gz --directory star_src && rm -f rakudo-star-*.tar.gz
+        ./star_src/bin/rstar install -p /tmp/rstar
 
     - name: Build Docker Image(s)
       env:
@@ -46,11 +55,11 @@ jobs:
         RSTAR_DEBUG: 1
       run: |
         for FILE in ${ALL_CHANGED_DOCKERFILES}; do
-          echo "Will work on file \"$FILE\" now..."
-          if ! [[ "$FILE" =~ "Dockerfile" ]]; then continue; fi
-          IMAGE=$(basename -s ".Dockerfile" $FILE)
-          echo "IMAGE is \"$IMAGE\""
-          ls -l ./star/bin/rstar
-          cd ./star
-          ./bin/rstar fetch && ./bin/rstar install && ./bin/rstar build-docker $IMAGE
+          echo "[INFO] Will copy changed Dockerfile \"$FILE\" now..."
+          if ! [[ "$FILE" =~ "Dockerfile" ]]; then echo "[WARN] Nor a Dockerfile, skipping file \"$FILE\"... && continue; fi       ### !!! should never happen !!!
+            cp -p $FILE star_src/$FILE
+            IMAGE=$(basename -s ".Dockerfile" $FILE)
+            echo "[INFO] Will build Dockerimage \"$IMAGE\" with Dockerfile \"$FILE\" now..."
+            ./star_src/bin/rstar build-docker $IMAGE
+          fi
         done
