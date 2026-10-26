@@ -63,3 +63,8 @@ jobs:
           echo "[INFO] Will build Dockerimage \"$IMAGE\" with Dockerfile \"$FILE\" now..."
           ./star_src/bin/rstar build-docker $IMAGE
         done
+
+    - name: List Docker Image(s)
+      run: |
+        echo "[INFO] Listig docker images..."
+        docker image ls

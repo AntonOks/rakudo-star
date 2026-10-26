@@ -1,45 +1,138 @@
-# Rakudo Star
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/rakudo/star)
+
+----
+
+# Rakudo-Star
 
 A *user-friendly* distribution of the [Raku programming language](https://raku.org/).
 
+## Pre-build binary Rakudo-Star packages
+
+* Please refer to [rakudo-star-pkg releases](https://github.com/AntonOks/rakudo-star-pkg/releases) for binary packages.
+
+**NOTE:** Please provide your feedback about those binary packages in the respective GitHub repo.
+  ```
+  - Mid-term this repo here will also release the binary packages.
+  - Even more, if desired by the users and community, the binary packages
+      could be also uploaded to 'https://www.rakudo.org/star'
+  ```
+
 ## Docker Image
 
-* Please refer to [Rakudo-Star on Docker Hub](https://hub.docker.com/_/rakudo-star) for an image
-* Find the related Docker files on the ["Raku Docker" GitHub repository](https://github.com/Raku/docker) 
+* Please refer to [Rakudo-Star on Docker Hub](https://hub.docker.com/_/rakudo-star) for an image.
+* Find the related Docker files on the ["Raku Docker" GitHub repository](https://github.com/Raku/docker)
 
 ## What's in this GIT repo
 
-There are currently two different tools within this repo. The so called [`RSTAR utility`](https://github.com/rakudo/star/blob/master/bin/rstar),
-which manages the Linux build, and the [chocolatey bases build script](https://github.com/rakudo/star/blob/master/tools/build/binary-release/Windows/build-with-choco.ps1), which manages the Windows MSI build.
+There are currently two different tools within this repo:
+1. The so called [`RSTAR tool`](https://github.com/rakudo/star/blob/master/bin/rstar), which manages the **Linux build** and local installation.
+2. The [chocolatey based Powershell build script](https://github.com/rakudo/star/blob/master/tools/build/binary-release/Windows/build-with-choco.ps1), which creates a **Windows MSI** package.
 
-### RSTAR utility
+Both tools compile Rakudo and then add some selected modules!
 
-* BASH based tool, should work on any Linux OS (_and maybe also macOS_?)
-* More information can be found in the [related Wiki page](https://github.com/rakudo/star/wiki/01_Rakudo-Star---Linux-package) 
+### 1. _RSTAR_ tool
 
-The the `rstar` utility is written in `bash`, all additional features should be
-also based on `bash`. Using other utilities is accepted, but effort should be made to
-avoid introducing new utilities. Furthermore, all code should be linted against
-[`shellcheck`](https://www.shellcheck.net/) and not produce any warnings.
+* `bash` based tool, should work on any **Linux OS** (_should also build Rakudo-Star on macOS_!?).
+  - The `rstar` (bash) tool downloads all requirements, like MoarVM, NQP, Rakudo and some Rakudo modules.
+  - It then compiles everything into a local Rakudo installation and add's the modules via `zef`.
+* More information can be found in the [related Wiki page](https://github.com/rakudo/star/wiki/01_Rakudo-Star---Linux-package)
 
-### build-with-choco.ps1 script
-* A [Powershell script](https://github.com/rakudo/star/blob/master/tools/build/binary-release/Windows/build-with-choco.ps1), which internally uses chocolatey to create a Windows MSI package
-* *More information to be added* in the [wiki](https://github.com/rakudo/star/wiki) 
+As the `rstar` utility is written in `bash`, all additional features should also be
+based on `bash`. Using other utilities is accepted, but efforts should be made to
+avoid introducing new utilities.
 
-### Community Modules
+Furthermore, all code should be linted against [`shellcheck`](https://www.shellcheck.net/) and not produce any warnings.
 
-One of Rakudo Star's main features is in supplying users with a number of
+#### Usage
+
+```
+rstar install [options] [core] [modules]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `-b <backend>` | Set the compiler backend (default: `moar`) |
+| `-p <prefix>` | Set the installation prefix |
+| `-T` | Skip module tests (`--/test`) during installation |
+
+**Skipping module tests:**
+
+By default, `zef` runs all tests when installing bundled modules. Pass `-T` to
+disable this, which can significantly speed up installation:
+
+```sh
+rstar install -T modules
+```
+
+You can also set the environment variable `RSTAR_NO_TEST` to any non-empty
+value to achieve the same effect without modifying the command:
+
+```sh
+RSTAR_NO_TEST=1 rstar install modules
+```
+
+> Note: When a module fails and is retried with `--force-test`, tests are
+> always run regardless of this option.
+
+### 2. _BUILD-WITH-CHOCO.PS1_ tool
+
+* A [Powershell script](https://github.com/rakudo/star/blob/master/tools/build/binary-release/Windows/build-with-choco.ps1), which internally uses `chocolatey` to create a **Windows MSI** package.
+    - The created MSI package can be used to install Rakudo-Star (Rakudo with some additional modules) on any Windows device.
+* More information can be found in the [wiki](https://github.com/rakudo/star/wiki)
+
+#### Usage
+
+```powershell
+.\build-with-choco.ps1 [[-RAKUDO_VER] <version>] [-sign] [-keep] [-NoTest]
+```
+
+**Parameters:**
+
+| Parameter | Description |
+|-----------|-------------|
+| `-RAKUDO_VER <version>` | The Rakudo release to build, e.g. `2026.04`. If omitted, the latest release is fetched automatically from GitHub. |
+| `-sign` | Sign the resulting `.msi` and checksum file with GPG. |
+| `-keep` | Keep the intermediate build artefacts after a successful build. |
+| `-NoTest` / `-T` | Skip module tests during `zef` installs (`--/test`). |
+
+**Skipping module tests:**
+
+By default, `zef` runs all tests when installing bundled modules. Pass `-NoTest`
+(or its alias `-T`) to disable this, which can significantly speed up the build:
+
+```powershell
+.\build-with-choco.ps1 -NoTest
+```
+
+You can also set the environment variable `RSTAR_NO_TEST` to any non-empty
+value to achieve the same effect without modifying the command:
+
+```powershell
+$env:RSTAR_NO_TEST = 1
+.\build-with-choco.ps1
+```
+
+---
+
+### 3. Community Modules
+
+Rakudo-Star's only main features is to support it's users with a number of
 popular community modules.
 
 *You should always prefer to use a pinned version of a module, wherever versions are available!*
+Therefore all Rakudo modules, which are included into Star, need i.e. to have `git tags`.
 
 #### [modules.txt](https://github.com/rakudo/star/blob/master/etc/modules.txt)
 
-This modules file contains references to all community modules to be bundled with Rakudo Star.
+This modules file contains references to all community modules to be bundled with Rakudo-Star.
 It is a space-separated format. The first column is the name of
 the module, the second the protocol to use, with the third column being the
 URL to fetch it from. Columns following the third have different meaning
 depending on the protocol.
+
+*Currently all modules are expected to be available via `git` (GitHub) and having `git tags`, similar to the `version` given in the modules `META6.json`*
 
 ## Bugs, Feedback and Patches
 
@@ -53,17 +146,17 @@ depending on the protocol.
 
 #### Mail and IRC
 
-* If you have a question about Rakudo Star, you probably want to write to the “perl6-users@perl.org” mailing list or ask the [irc.libera.chat/#raku-star](https://web.libera.chat/#raku-star) IRC channel.
+* If you have a question about Rakudo-Star, you probably want to write to the “perl6-users@perl.org” mailing list or ask the [irc.libera.chat/#raku-star](https://web.libera.chat/#raku-star) IRC channel.
 
 #### GitHub Platform
 
-* Knowledge and documentation related to Rakudo Star can be published in the related [wiki](https://github.com/rakudo/star/wiki).
+* Knowledge and documentation related to Rakudo-Star can be published in the related [wiki](https://github.com/rakudo/star/wiki).
 * There is also [Star discussions](https://github.com/rakudo/star/discussions) for any kind of ongoing discussions, alignements, FAQ's, ...
   * Once things are discussed, agreed, finalized, they should be documented in the Wiki, see above!
 
 ### Patches And Code Contributions
 
-* Please send your pull requests to the [RAKUDO Star](https://github.com/rakudo/star) repository!
+* Please send your pull requests to the [RAKUDO-Star](https://github.com/rakudo/star) repository!
 * Also, try to be generous with comments. Especially when introducing new utility
   functions, a little description of what it does and what problem it is intended
   to solve go a long way.
